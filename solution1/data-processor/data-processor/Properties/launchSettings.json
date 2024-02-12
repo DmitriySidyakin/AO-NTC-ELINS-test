@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "data-processor": {
+      "commandName": "Project",
+      "commandLineArgs": "source.txt result.txt"
+    }
+  }
+}
