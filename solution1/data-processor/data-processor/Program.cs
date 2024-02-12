@@ -78,31 +78,33 @@ namespace data_processor
                 resultCodes = String.Empty;
 
                 bool start = true;
-                for (long i = 1; i < sourceEntitiesGroup.LongLength; i++)
+                for (long i = 0; i < sourceEntitiesGroup.LongLength; i++)
                 {
-                    if (sourceEntitiesGroup[i - 1].Code + 1 == sourceEntitiesGroup[i].Code)
+                    if (start)
                     {
-                        if (start)
-                        {
-                            resultCodes += $"{sourceEntitiesGroup[i - 1].Code}-";
-                            start = false;
-                        }
-                        else
-                        {
-                            if (sourceEntitiesGroup.LongLength == i + 1)
+                        if (i != 0)
+                            resultCodes += ", ";
+                        resultCodes += $"{sourceEntitiesGroup[i].Code}";
+                        if (i < sourceEntitiesGroup.LongLength - 1)
+                            if (sourceEntitiesGroup[i].Code + 1 == sourceEntitiesGroup[i + 1].Code)
                             {
-                                resultCodes += $"{sourceEntitiesGroup[i].Code}";
+                                resultCodes += $"-";
+                                start = false;
                             }
-                        }
                     }
                     else
                     {
-                        start = true;
-                        resultCodes += $"{sourceEntitiesGroup[i - 1].Code}, {sourceEntitiesGroup[i].Code}";
-                        if (sourceEntitiesGroup.LongLength != i + 1)
+                        if (i < sourceEntitiesGroup.LongLength - 1)
+                        { 
+                            if (sourceEntitiesGroup[i].Code + 1 != sourceEntitiesGroup[i + 1].Code)
+                            {
+                                resultCodes += $"{sourceEntitiesGroup[i].Code}";
+                                start = true;
+                            }
+                        }
+                        else if(i == sourceEntitiesGroup.LongLength - 1)
                         {
-                            resultCodes += "-";
-                            start = false;
+                            resultCodes += $"{sourceEntitiesGroup[i].Code}";
                         }
                     }
                 }
