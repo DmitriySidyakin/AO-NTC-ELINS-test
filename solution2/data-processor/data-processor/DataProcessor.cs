@@ -13,7 +13,7 @@ namespace data_processor
 
         public delegate List<outT> Transform(List<inT> entities);
 
-        public delegate void SaveSourceEntities(List<outT> destinationEntities, string endFilePath);
+        public delegate void SaveEntities(List<outT> destinationEntities, string endFilePath);
 
         public string SourceFilePath { get; private set; }
 
@@ -27,22 +27,22 @@ namespace data_processor
 
         private Transform TransformDelegate { get; set; }
 
-        private SaveSourceEntities SaveSourceEntitiesDelegate { get; set; }
+        private SaveEntities SaveEntitiesDelegate { get; set; }
 
-        public DataProcessor(string sourceFilePath, string endFilePath, LoadSourceEntities loadSourceEntitiesDelegate, Transform transformDelegate, SaveSourceEntities saveSourceEntitiesDelegate)
+        public DataProcessor(string sourceFilePath, string endFilePath, LoadSourceEntities loadSourceEntitiesDelegate, Transform transformDelegate, SaveEntities saveEntitiesDelegate)
         {
             SourceFilePath = sourceFilePath;
             EndFilePath = endFilePath;
             LoadSourceEntitiesDelegate = loadSourceEntitiesDelegate;
             TransformDelegate = transformDelegate;
-            SaveSourceEntitiesDelegate = saveSourceEntitiesDelegate;
+            SaveEntitiesDelegate = saveEntitiesDelegate;
         }
 
         public void Process()
         {
             SourceEntities = LoadSourceEntitiesDelegate(SourceFilePath);
             DestinationEntities = TransformDelegate(SourceEntities);
-            SaveSourceEntitiesDelegate(DestinationEntities, EndFilePath);
+            SaveEntitiesDelegate(DestinationEntities, EndFilePath);
         }
     }
 }
